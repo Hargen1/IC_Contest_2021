@@ -393,7 +393,7 @@ always @(*) begin
 	endcase
 end
 
-// use design ware IP
+// DesignWare DW_sqrt
 DW_sqrt #(29, 0) sqrt0 (.a(sqrt_in), .root(root));
 
 always @(posedge clk or posedge reset) begin
