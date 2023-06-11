@@ -336,38 +336,39 @@ always @(*) begin
 end
 
 // Heron's input
-always @(*) begin
-	case(hold_cnt)
-		0: begin
-			Heron[0] = root + R_wire[0] + R_wire[1];
-			Heron[1] = root + R_wire[0] - R_wire[1];
-		end 
-		1: begin
-			Heron[0] = root_temp - R_wire[0] + R_wire[1];
-			Heron[1] = R_wire[0] - root_temp + R_wire[1];
-		end
-		default: begin
-			Heron[0] = 0;
-			Heron[1] = 0;
-		end
-	endcase
-end
-
-// half Heron calc
 always @(posedge clk or posedge reset) begin
 	if (reset) begin
-		Half_Heron <= 0;
+		Heron[0] <= 0;
+		Heron[1] <= 0;
 	end
 	else begin
-		case(state)
-			AREA: begin
-				Half_Heron <= Heron[0]* Heron[1];
+		case(hold_cnt)
+			0: begin
+				Heron[0] <= root + R_wire[0] + R_wire[1];
+				Heron[1] <= root + R_wire[0] - R_wire[1];
+			end 
+			1: begin
+				Heron[0] <= root_temp - R_wire[0] + R_wire[1];
+				Heron[1] <= R_wire[0] - root_temp + R_wire[1];
 			end
 			default: begin
-				Half_Heron <= Half_Heron;
+				Heron[0] <= 0;
+				Heron[1] <= 0;
 			end
 		endcase
 	end
+end
+
+// half Heron calc
+always @(*) begin
+	case(state)
+		AREA: begin
+			Half_Heron = Heron[0]* Heron[1];
+		end
+		default: begin
+			Half_Heron = 0;
+		end
+	endcase
 end
 
 // vector calc
