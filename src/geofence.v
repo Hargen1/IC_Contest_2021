@@ -413,7 +413,7 @@ always @(posedge clk or posedge reset) begin
 				case(hold_cnt)
 					0: sum <= 0;
 					1: sum <= root;
-					2: sum <= ( sum * root + 128 ) >> 8;
+					2: sum <= ( sum * root + 32 ) >> 6;
 					default: sum <= sum;
 				endcase
 			end
